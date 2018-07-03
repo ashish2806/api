@@ -1,16 +1,17 @@
-import React, { Component } from 'react';
-import { Route,Link,Switch } from 'react-router-dom';
-import { BrowserRouter } from 'react-router-dom';
-
+import React from 'react';
+import { Route } from 'react-router-dom';
+import { BrowserRouter,Switch } from 'react-router-dom';
+import Posts from './containers/Blog/posts/posts';
 
 import Login from './components/Login/Login';
 
 
 const routes = () =>(
     <BrowserRouter>
-    <switch>
+    <Switch>
         <Route path="/login" component={Login} />
-    </switch>
+        <Route path="/home" exact  component={Posts} />
+    </Switch>
     </BrowserRouter>
 );
 

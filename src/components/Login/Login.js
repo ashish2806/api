@@ -1,14 +1,37 @@
 import React, { Component } from 'react';
 import './Login.css';
+import axios from '../../axios';
+import { Redirect } from 'react-router-dom';
 class Login extends Component
 {
     state={
         email:'',
-        password:''
+        password:'',
+        redirect : false
     }
 
     loginHandler(){
-    console.log(this.state);
+
+        const data ={
+            email:this.state.email,
+            password:this.state.password
+        }
+        axios.post('login',data).then(response =>{
+            
+               
+               if(response.data){
+                console.log(response.data.success.token);
+                    sessionStorage.setItem('userData',response.data.success);
+                    this.setState({ redirect : true});
+               }
+        }).catch(error=>{
+            if (error.response.status === 401) {
+                console.log(error.response.data.error);
+               // console.log('unauthorized, logging out ...');
+               
+            }
+            return Promise.reject(error.response);
+        });
     }
 
     onChnageHandler(e){
@@ -17,6 +40,14 @@ class Login extends Component
     }
     render()
     {
+
+
+        if(this.state.redirect){
+                return (<Redirect to='/home' />)
+        }
+        if(sessionStorage.getItem("userData")){
+            return (<Redirect to='/home' />)
+        }
         return(
             <div className="login-form">
                  <h2 className="text-center">Log in</h2>       
@@ -29,12 +60,7 @@ class Login extends Component
                         <div className="form-group">
                             <button type="submit" className="btn btn-primary btn-block" onClick={()=>this.loginHandler()}>Log in</button>
                         </div>
-                        <div className="clearfix">
-                            <label className="pull-left checkbox-inline"><input type="checkbox" /> Remember me</label>
-                            <a href="#" className="pull-right">Forgot Password?</a>
-                        </div>        
-                
-                        <p className="text-center"><a href="#">Create an Account</a></p>
+                        
 
             </div>
         );

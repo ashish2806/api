@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Routes from './router';
 import Blog from './containers/Blog/Blog';
 import { BrowserRouter } from 'react-router-dom';
-import { Route,Link } from 'react-router-dom';
+
 class App extends Component {
   state={
     authentication : false
